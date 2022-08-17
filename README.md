@@ -14,3 +14,13 @@
 ![hemi_html](https://user-images.githubusercontent.com/68654746/185201382-a539eae2-f67d-4091-9969-0e067e4d80ab.jpg)
 
 ![hemi](https://user-images.githubusercontent.com/68654746/185200837-7a58ed2c-d4b1-46f7-8c81-7b71485e5056.jpg)
+
+**Deliverable 3: Add Bootstrap 3 Components**
+- Update your web app to make it mobile-responsive.
+   - In index.html, I changed the tier of class from md (desktop) to xs (phones).
+
+![bootstrap_mobile](https://user-images.githubusercontent.com/68654746/185207751-d9ad2b02-aa02-45c1-a9d4-ee1fc2967eb6.jpg)
+
+- Add two other Bootstrap 3 components
+    - Styling the "Scrape New Data" button
+    - Adding the hemisphere images as thumbnails
