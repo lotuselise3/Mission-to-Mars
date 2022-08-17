@@ -2,7 +2,6 @@
 # Import Splinter and BeautifulSoup and pandas
 from splinter import Browser
 from bs4 import BeautifulSoup as soup
-from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import datetime as dt
 from webdriver_manager.chrome import ChromeDriverManager
@@ -24,6 +23,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres": hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -111,46 +111,30 @@ def mars_facts():
 def hemispheres(browser):
     
     # Visit URL
-    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    url = 'https://marshemispheres.com/'
     browser.visit(url)
-
-    # Parse the resulting html with soup
-    hemi_html = browser.html
-    hemi_soup = soup(hemi_html, 'html.parser')
-
-    # Retrieve all items for hemispheres information
-    items = hemi_soup.find_all('div', class_='item')
 
     # 2. Create a list to hold the images and titles.
     hemisphere_image_urls = []
 
     # 3. Write code to retrieve the image urls and titles for each hemisphere.
-
-    main_url = "https://astrogeology.usgs.gov/"
-
     # Create loop to scrape through all hemisphere information
-    for x in items:
-        hemisphere = {}
-        titles = x.find('h3').text
-        
-        # create link for full image
-        link_ref = x.find('a', class_='itemLink product-item')['href']
-        
-        # Use the base URL to create an absolute URL and browser visit
-        browser.visit(main_url + link_ref)
-        
-        # parse the data
-        image_html = browser.html
-        image_soup = soup(image_html, 'html.parser')
-        download = image_soup.find('div', class_= 'downloads')
-        img_url = download.find('a')['href']
-        
-        print(titles)
-        print(img_url)
-        
-        # append list
-        hemisphere['img_url'] = img_url
-        hemisphere['title'] = titles
+    for  i in range(4):
+        hemi_html = browser.html
+        hemi_soup = soup(hemi_html, 'html.parser')
+
+        # Retrieve all items for hemispheres information
+        hemi_links = hemi_soup.find_all('h3')
+        # Navigate and click the link of the hemisphere
+        browser.find_by_css("a.product-item img")[i].click()
+        html= browser.html
+        img_soup = soup(html, 'html.parser')
+        # Scrape the image link
+        img_url = 'https://marshemispheres.com/' + str(img_soup.find('img', class_='thumb')['src'])
+        # Scrape the title
+        title = img_soup.find('h2', class_='title').text
+        # Define and append to the dictionary
+        hemisphere = {'img_url': img_url,'title': title}
         hemisphere_image_urls.append(hemisphere)
         browser.back()
         
